@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
+
 import json
-import logging
+import os
 import requests
+from logger import logger
 from request_utils import *
 from presets import *
 
@@ -28,8 +30,10 @@ class BDLRequest(object):
     def start(self):
         yearsString = RequestParameter.yearString(self.years)
         url = f"{BASE_URL}/data/by-variable/{self.variable}?format=json&unit-parent-id={self.city}&{yearsString}"
-        response = requests.get(url)
-        if (response.ok):
+        logger.debug(f"HTTP GET {url}...")
+        apiKey = os.environ.get('BDL_API_KEY')
+        response = requests.get(url, headers={"X-ClientId": apiKey})
+        if response.ok:
             data = json.loads(response.content)
             results = data["results"]
             cityName = results[0]["name"]
@@ -44,5 +48,10 @@ class BDLRequest(object):
                 vals.append(datapoints[year])
             return BDLRow([""] + years, [cityName] + vals)
         else:
-            logging.error(f"Request failed [{response.status_code} {response.reason}]")
-            logging.error(response.text)
+            if response.status_code == 429:
+                logger.warning(
+                    "In case of 'Too Many Requests' error register on https://api.stat.gov.pl/Home/BdlApi"
+                    " and set BDL_API_KEY environment variable to increase your request limits"
+                )
+            logger.error(f"Request failed [{response.status_code} {response.reason}]")
+            logger.error(response.text)

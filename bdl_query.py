@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 from bdl_request import BDLRequest
-import logging
 
 
 class BDLQuery(object):
