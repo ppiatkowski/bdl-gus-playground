@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "BDL explore",
+            "type": "python",
+            "request": "launch",
+            "program": "bdl.py",
+            "args": ["-x"],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "BDL population",
             "type": "python",
             "request": "launch",

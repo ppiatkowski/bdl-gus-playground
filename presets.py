@@ -16,6 +16,10 @@ class Unit:
 
 
 class Variable:
+    class Demographics:
+        births = 63221
+        deaths = 63215
+
     class Population:
         total = 72305
         male = 72300

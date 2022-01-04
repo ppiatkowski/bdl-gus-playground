@@ -8,7 +8,14 @@ from tablib import Dataset
 from request_utils import *
 from presets import *
 from bdl_query import BDLMultiCityQuery, BDLMultiVariableQuery
-from subjects import explore_subjects
+from explore import explore_subjects
+
+
+class Requests:
+    births = "births"
+    deaths = "deaths"
+    population_by_age_and_gender = "population_by_age_and_gender"
+    population = "population"
 
 
 def main(argv):
@@ -40,12 +47,16 @@ def exportToXLSX(data):
 def handleRequest(args):
     try:
         requestType = args.request
-        if requestType == "population":
+        if requestType == Requests.population:
             query = BDLMultiCityQuery(Variable.Population.total, CITIES_10, lastYears())
-        elif requestType == "population_by_age_and_gender":
+        elif requestType == Requests.population_by_age_and_gender:
             if args.year == None:
                 raise Exception(f"Year parameter is required in request {requestType}")
             query = BDLMultiVariableQuery(FEMALES, Unit.lublin, args.year)
+        elif requestType == Requests.births:
+            query = BDLMultiCityQuery(Variable.Demographics.births, CITIES_10, lastYears())
+        elif requestType == Requests.deaths:
+            query = BDLMultiCityQuery(Variable.Demographics.deaths, CITIES_10, lastYears())
         else:
             raise Exception(f"Invalid request {requestType}.\nValid request types are:{requestHelp()}")
 
@@ -61,7 +72,7 @@ def handleRequest(args):
 
 
 def requestHelp():
-    return "\n - population\n - population_by_age_and_gender"
+    return f"\b - {Requests.births}\n - {Requests.deaths}\n - {Requests.population}\n - {Requests.population_by_age_and_gender}"
 
 
 if __name__ == "__main__":
