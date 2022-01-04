@@ -5,10 +5,27 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "BDL Playground",
+            "name": "BDL population",
             "type": "python",
             "request": "launch",
             "program": "bdl.py",
+            "args": ["-r population"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "BDL population by age and gender",
+            "type": "python",
+            "request": "launch",
+            "program": "bdl.py",
+            "args": ["-r population_by_age_and_gender", "-y 2020", "--export"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "BDL Export",
+            "type": "python",
+            "request": "launch",
+            "program": "bdl.py",
+            "args": ["--export"],
             "console": "integratedTerminal"
         }
     ]

@@ -12,3 +12,7 @@ class RequestParameter:
 def lastYears(n=12):
     thisYear = date.today().year
     return list(range(thisYear - n, thisYear+1))
+
+
+def lastYear():
+    return date.today().year - 1
